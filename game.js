@@ -9,58 +9,65 @@ Here, we create and add our "canvas" to the page.
 We also load all of our images.
 */
 
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d");
 canvas.width = 512;
 canvas.height = 480;
-document.getElementById('canvas').appendChild(canvas);
+document.getElementById("canvas").appendChild(canvas);
 
-let bg = {};
+let background = {};
 
 /**
  * Setting up our characters.
  *
  * Note that hero.x represents the X position of our hero.
  * hero.y represents the Y position.
- * We'll need these values to know where to "draw" the hero.
+ * We'll need these values to know the status where to "draw" the hero.
  * The same goes for the monsters
  *
  */
 
-let hero = { x: canvas.width / 2, y: canvas.height / 2 };
-let monsters = [
-	{ x: 100, y: 100 },
-	{ x: 200, y: 200 },
-	{ x: 300, y: 300 },
-];
+let hero = { x: canvas.width / 2, y: canvas.height / 2, size: 32 }; // hero position x,y
 
-let startTime = Date.now();
-const SECONDS_PER_ROUND = 30;
-let elapsedTime = 0;
+let monsters = [
+  { x: 100, y: 100 }, //monster 1 position x,y
+  { x: 200, y: 200 }, //monster 2 position x,y
+  { x: 300, y: 300 }, //monster 3 position x,y
+];
+let startTime = Date.now(); // Record the starting time
+const SECONDS_PER_ROUND = 30; // set limit of how long a round SHOULD run
+let elapsedTime = 0; // keep track of how long game is run
+let keysPressed = {}; //keep track of what key is pressing !!!!!
+
+let score = 0;
+//END of declaration
 
 function loadImages() {
-	bg.image = new Image();
+  background.image = new Image(); //tellinng that we are preparing an image
 
-	bg.image.onload = function () {
-		// show the background image
-		bg.ready = true;
-	};
-	bg.image.src = 'images/background.png';
-	hero.image = new Image();
-	hero.image.onload = function () {
-		// show the hero image
-		hero.ready = true;
-	};
-	hero.image.src = 'images/hero.png';
+  background.image.onload = function () {
+    // show the background image
+    background.ready = true; ///////// to change the check that image is now ready
+  };
 
-	monsters.forEach((monster, i) => {
-		monster.image = new Image();
-		monster.image.onload = function () {
-			// show the monster image
-			monster.ready = true;
-		};
-		monster.image.src = `images/monster_${i + 1}.png`;
-	});
+  background.image.src = "images/background.png"; //the src of
+
+  hero.image = new Image();
+  hero.image.onload = function () {
+    // show the hero image
+    hero.ready = true;
+  };
+  hero.image.src = "images/hero.png";
+
+  for (let index = 0; index < monsters.length; index++) {
+    const monster = monsters[index];
+    monster.image = new Image();
+    monster.image.onload = function () {
+      // show the monster image
+      monster.ready = true;
+    };
+    monster.image.src = `images/monster_${index + 1}.png`;
+  }
 }
 
 /**
@@ -69,25 +76,25 @@ function loadImages() {
  *
  * This is just to let JavaScript know when the user has pressed a key.
  */
-let keysPressed = {};
-function setupKeyboardListeners() {
-	// Check for keys pressed where key represents the keycode captured
-	// For now, do not worry too much about what's happening here.
-	document.addEventListener(
-		'keydown',
-		function (e) {
-			keysPressed[e.key] = true;
-		},
-		false
-	);
 
-	document.addEventListener(
-		'keyup',
-		function (e) {
-			keysPressed[e.key] = false;
-		},
-		false
-	);
+function setupKeyboardListeners() {
+  // Check for keys pressed where key represents the keycode captured
+  // For now, do not worry too much about what's happening here.
+  document.addEventListener(
+    "keydown",
+    function (e) {
+      keysPressed[e.key] = true;
+    },
+    false
+  );
+
+  document.addEventListener(
+    "keyup",
+    function (e) {
+      keysPressed[e.key] = false;
+    },
+    false
+  );
 }
 
 /**
@@ -97,50 +104,88 @@ function setupKeyboardListeners() {
  *  If you change the value of 5, the player will move at a different rate.
  */
 let update = function () {
-	// Update the time.
-	elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+  // Update the time.
+  elapsedTime = Math.floor((Date.now() - startTime) / 1000);
 
-	if (keysPressed['ArrowUp']) {
-		hero.y -= 5;
-	}
-	if (keysPressed['ArrowDown']) {
-		hero.y += 5;
-	}
-	if (keysPressed['ArrowLeft']) {
-		hero.x -= 5;
-	}
-	if (keysPressed['ArrowRight']) {
-		hero.x += 5;
-	}
+  if (keysPressed["ArrowUp"]) {
+    hero.y -= 5;
+  }
+  if (keysPressed["ArrowDown"]) {
+    hero.y += 5;
+  }
+  if (keysPressed["ArrowLeft"]) {
+    hero.x -= 5;
+  }
+  if (keysPressed["ArrowRight"]) {
+    hero.x += 5;
+  }
 
-	// Check if player and monster collided. Our images
-	// are 32 pixels big.
-	monsters.forEach((monster) => {
-		if (hero.x <= monster.x + 32 && monster.x <= hero.x + 32 && hero.y <= monster.y + 32 && monster.y <= hero.y + 32) {
-			// Pick a new location for the monster.
-			// Note: Change this to place the monster at a new, random location.
-			monster.x = monster.x + 50;
-			monster.y = monster.y + 70;
-		}
-	});
+  // Check if player and monster collided. Our images
+  // are 32 pixels big.
+
+  // let monsters = [
+  // 	{ x: 100, y: 100 }, //monster 1 position x,y
+  // 	{ x: 200, y: 200 }, //monster 2 position x,y
+  // 	{ x: 300, y: 300 }, //monster 3 position x,y
+  // ];
+  //monster conllion
+  for (let index = 0; index < monsters.length; index++) {
+    let singleMonster = monsters[index];
+    if (
+      hero.x <= singleMonster.x + hero.size &&
+      singleMonster.x <= hero.x + hero.size &&
+      hero.y <= singleMonster.y + hero.size &&
+      singleMonster.y <= hero.y + hero.size
+    ) {
+      // Pick a new location for the singleMonster.
+      // Note: Change this to place the singleMonster at a new, random location.
+      score += 1;
+      singleMonster.x = Math.floor(Math.random() * canvas.width) - 40;
+      singleMonster.y = Math.floor(Math.random() * canvas.height) - 40;
+    }
+  }
+
+  //top and bottom collision detection //left and right collision detection
+  if (hero.y >= canvas.height - hero.size) {
+    hero.y = 0;
+  } else if (hero.y <= 0) {
+    hero.y = canvas.height - hero.size;
+  }
+  if (hero.x >= canvas.width - hero.size) {
+    hero.x = 0;
+  } else if (hero.x <= 0) {
+    hero.x = canvas.width - hero.size;
+  }
+
+  //monster collision detection
+  // let monsters = [
+  // 	{ x: 100, y: 100 }, //monster 1 position x,y
+  // 	{ x: 200, y: 200 }, //monster 2 position x,y
+  // 	{ x: 300, y: 300 }, //monster 3 position x,y
+  // ];
 };
 
 /**
  * This function, render, runs as often as possible.
  */
 function render() {
-	if (bg.ready) {
-		ctx.drawImage(bg.image, 0, 0);
-	}
-	if (hero.ready) {
-		ctx.drawImage(hero.image, hero.x, hero.y);
-	}
-	monsters.forEach((monster) => {
-		if (monster.ready) {
-			ctx.drawImage(monster.image, monster.x, monster.y);
-		}
-	});
-	ctx.fillText(`Seconds Remaining: ${SECONDS_PER_ROUND - elapsedTime}`, 20, 100);
+  document.getElementById("score").innerHTML = `this is my score: ${score}`;
+  if (background.ready) {
+    ctx.drawImage(background.image, 0, 0);
+  }
+  if (hero.ready) {
+    ctx.drawImage(hero.image, hero.x, hero.y);
+  }
+  monsters.forEach((monster) => {
+    if (monster.ready) {
+      ctx.drawImage(monster.image, monster.x, monster.y);
+    }
+  });
+  ctx.fillText(
+    `Seconds Remaining: ${SECONDS_PER_ROUND - elapsedTime}`,
+    20,
+    100
+  );
 }
 
 /**
@@ -149,17 +194,23 @@ function render() {
  * render (based on the state of our game, draw the right things)
  */
 function main() {
-	update();
-	render();
-	// Request to do this again ASAP. This is a special method
-	// for web browsers.
-	requestAnimationFrame(main);
+  update();
+  render();
+
+  // Request to do this again ASAP. This is a special method
+  // for web browsers.
+  requestAnimationFrame(main); // keep the browser update IF THERE IS ANIMATION
 }
 
 // Cross-browser support for requestAnimationFrame.
 // Safely ignore this line. It's mostly here for people with old web browsers.
+// enable the function (to keep the browser update IF THERE IS ANIMATION)
 var w = window;
-requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.msRequestAnimationFrame || w.mozRequestAnimationFrame;
+requestAnimationFrame =
+  w.requestAnimationFrame ||
+  w.webkitRequestAnimationFrame ||
+  w.msRequestAnimationFrame ||
+  w.mozRequestAnimationFrame;
 
 // Let's play this game!
 loadImages();
