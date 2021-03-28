@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Best Game Ever!</title>
+  </head>
+  <body>
+    <form>
+      <div id="insertname">
+        Your name: <input type="text" name="yourname" />
+        <button id="submit">Submit</button>
+      </div>
+      <div id="chooselevel">
+        Choose the level:
+        <button id="easy">Easy</button>
+        <button id="hard">Hard</button>
+      </div>
+    </form>
+  </body>
+</html>

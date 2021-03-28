@@ -6,8 +6,28 @@
     <title>Best Game Ever!</title>
   </head>
   <body>
-    <div id="canvas"></div>
-    <div id="score"></div>
+    <form id="formname">
+      <div id="insertname">
+        <div>YOUR NAME</div>
+        <input
+          type="text"
+          name="namename"
+          placeholder="Enter your name"
+          id="yourname"
+        />
+        <input
+          type="submit"
+          value="Play now >>"
+          id="Submit"
+          onclick="getName()"
+        />
+      </div>
+    </form>
+    <div id="gameoff">
+      <div id="canvas"></div>
+      <div id="score"></div>
+    </div>
+
     <script src="game.js"></script>
   </body>
 </html>

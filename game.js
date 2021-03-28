@@ -169,7 +169,7 @@ let update = function () {
  * This function, render, runs as often as possible.
  */
 function render() {
-  document.getElementById("score").innerHTML = `this is my score: ${score}`;
+  document.getElementById("score").innerHTML = `this is score: ${score}`;
   if (background.ready) {
     ctx.drawImage(background.image, 0, 0);
   }
@@ -213,6 +213,18 @@ requestAnimationFrame =
   w.mozRequestAnimationFrame;
 
 // Let's play this game!
-loadImages();
-setupKeyboardListeners();
-main();
+function playGame() {
+  loadImages();
+  setupKeyboardListeners();
+  main();
+  document.getElementById("formname").style.display = "none";
+}
+
+function getName() {
+  const name = document.getElementById("yourname").value;
+  if (name.length == 0) {
+    alert("Please insert your name");
+  } else if (name.length > 0) {
+    playGame();
+  }
+}

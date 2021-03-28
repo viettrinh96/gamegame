@@ -1,4 +1,38 @@
+body {
+  margin: 0 auto;
+  padding: 0 auto;
+}
+#gameoff {
+  display: flex;
+  flex-direction: column-reverse;
+  text-align: center;
+}
 #canvas {
-	display: flex;
-	justify-content: center;
+  display: flex;
+  justify-content: center;
+}
+form {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+}
+form div {
+  font-size: larger;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  font-weight: bolder;
+}
+#Submit {
+  margin-top: 10px;
+  border: 0px solid white;
+  border-radius: 10px 10px;
+  background-color: whitesmoke;
+}
+#Submit:hover {
+  background-color: teal;
+  color: whitesmoke;
 }
