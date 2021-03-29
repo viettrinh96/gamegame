@@ -40,6 +40,7 @@ let elapsedTime = 0; // keep track of how long game is run
 let keysPressed = {}; //keep track of what key is pressing !!!!!
 
 let score = 0;
+let sth;
 //END of declaration
 
 function loadImages() {
@@ -219,12 +220,16 @@ function playGame() {
   main();
   document.getElementById("formname").style.display = "none";
 }
-
 function getName() {
-  const name = document.getElementById("yourname").value;
-  if (name.length == 0) {
-    alert("Please insert your name");
-  } else if (name.length > 0) {
-    playGame();
-  }
+  playGame();
 }
+// function getName() {
+//   let name = document.getElementById("yourname").value;
+//   if (name.length == 0) {
+//     alert("Please insert your name");
+//     getName.preventDefault();
+//   } else if (name.length > 0) {
+//     getName.preventDefault();
+//     playGame();
+//   }
+// }

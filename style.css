@@ -1,11 +1,13 @@
 body {
   margin: 0 auto;
   padding: 0 auto;
+  background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
 }
 #gameoff {
   display: flex;
   flex-direction: column-reverse;
   text-align: center;
+  min-height: 100vh;
 }
 #canvas {
   display: flex;
@@ -16,7 +18,6 @@ form {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
 }
 form div {
   font-size: larger;
